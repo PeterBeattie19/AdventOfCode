@@ -1,6 +1,7 @@
 def get_input():
     return list(map(int, open("day2_input.txt", "r").read().split(','))) 
 
+
 class Computer:
     def __init__(self, tape):
         self._pos = 0 
@@ -10,6 +11,11 @@ class Computer:
     @property
     def tape(self):
         return self._tape
+
+    @tape.setter
+    def tape(self, val):
+        self._tape = val
+        self._pos = 0
 
     def add_opcode(self, code, jump, func): 
         """
@@ -26,19 +32,28 @@ class Computer:
         self._pos += jump 
         return True 
 
+
 def op_code_1(tape, pos):
     tape[tape[pos+3]] = tape[tape[pos+1]] + tape[tape[pos+2]] 
     return True
+
 
 def op_code_2(tape, pos):
     tape[tape[pos+3]] = tape[tape[pos+1]] * tape[tape[pos+2]] 
     return True
 
+
 def op_code_99(tape, pos):
     return False 
 
 
-tape_ = get_input() 
+def run_comp(computer):
+    while computer.next():
+        pass
+
+
+tape_ = get_input()
+back_up_tape = list(tape_)
 tape_[1] = 12
 tape_[2] = 2 
 compute = Computer(tape_) 
@@ -46,6 +61,21 @@ compute.add_opcode(1, 4, op_code_1)
 compute.add_opcode(2, 4, op_code_2) 
 compute.add_opcode(99, None, op_code_99) 
 
+# Part 2
+val_ = 19690720
+for noun in range(100):
+    for verb in range(100):
+        tape_ = list(back_up_tape)
+        tape_[1], tape_[2] = noun, verb
+        compute.tape = tape_
+        run_comp(compute)
+        print(compute.tape[0])
+        if compute.tape[0] == val_:
+            print("FOUND ANSWER")
+            print((100 * noun) + verb)
+            exit(0)
+
+exit(1)
 while compute.next():
     print(compute._pos)
 
