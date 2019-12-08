@@ -64,7 +64,7 @@ for i2 in line2:
     line2_points += res
 
 
-intersections = list(set(line1_points).intersection(set(line2_points)))
+intersections = list(set(line1_points).intersection(set(line2_points))) # &
 
 line1_dist = [trace((0, 0), line1, i, direction_map) for i in intersections]
 line2_dist = [trace((0, 0), line2, i, direction_map) for i in intersections]
